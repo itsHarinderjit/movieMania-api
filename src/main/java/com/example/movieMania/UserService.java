@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +23,7 @@ public class UserService {
         return userRepository.findUserByUserName(userName);
     }
 
-    public boolean addMovieInWishlist(String userName,String imdbId) {
+    public boolean addMovieInWatchlist(String userName,String imdbId) {
         Optional<Movie> opmovie = movieRepository.findMovieByImdbId(imdbId);
         Movie movie = null;
         if (opmovie.isPresent())
@@ -31,8 +32,16 @@ public class UserService {
             return false;
         mongoTemplate.update(User.class)
                 .matching(Criteria.where("userName").is(userName))
-                .apply(new Update().push("wishlist").value(movie))
+                .apply(new Update().push("watchlist").value(movie))
                 .first();
         return true;
+    }
+
+    public Optional<User> addUser(String userName,String password) {
+        Optional<User> opUser = userRepository.findUserByUserName(userName);
+        if(opUser.isPresent()) {
+            return Optional.empty();
+        }
+        return Optional.of(userRepository.insert(new User(userName,password, List.of())));
     }
 }

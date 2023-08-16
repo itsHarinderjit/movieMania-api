@@ -21,5 +21,11 @@ public class User {
     private String userName;
     private String password;
     @DocumentReference
-    private List<Movie> wishlist;
+    private List<Movie> watchlist;
+
+    public User(String userName,String password,List<Movie> watchlist) {
+        this.userName = userName;
+        this.password = password;
+        this.watchlist = watchlist;
+    }
 }

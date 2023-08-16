@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(path = "api/v1/user")
+    @PostMapping(path = "api/v1/user/LogIn")
     public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String,String> payload) {
         String userName = payload.get("userName");
         String password = payload.get("password");
@@ -38,8 +38,19 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/api/v1/user/Register")
+    public ResponseEntity<Optional<User>> addUser(@RequestBody Map<String ,String > payload) {
+        Optional<User> user = userService.addUser(payload.get("userName"),payload.get("password"));
+        if(user.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_ACCEPTABLE,"User already exists"
+            );
+        }
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
     @PostMapping(path = "/api/v1/user/addMovie")
-    public ResponseEntity<Boolean> addMovieToWishlist(@RequestBody Map<String,String> payload) {
-        return new ResponseEntity<>(userService.addMovieInWishlist(payload.get("userName"),payload.get("imdbId")),HttpStatus.OK);
+    public ResponseEntity<Boolean> addMovieToWatchlist(@RequestBody Map<String,String> payload) {
+        return new ResponseEntity<>(userService.addMovieInWatchlist(payload.get("userName"),payload.get("imdbId")),HttpStatus.OK);
     }
 }
