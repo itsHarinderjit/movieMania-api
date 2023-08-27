@@ -53,4 +53,9 @@ public class UserController {
     public ResponseEntity<Boolean> addMovieToWatchlist(@RequestBody Map<String,String> payload) {
         return new ResponseEntity<>(userService.addMovieInWatchlist(payload.get("userName"),payload.get("imdbId")),HttpStatus.OK);
     }
+
+    @PostMapping(path = "/api/v1/user/removeMovie")
+    public ResponseEntity<Boolean> removeMovieFromWatchlist(@RequestBody Map<String,String> payload) {
+        return new ResponseEntity<>(userService.removeMovieFromWatchlist(payload.get("username"),payload.get("imdbId")),HttpStatus.OK);
+    }
 }

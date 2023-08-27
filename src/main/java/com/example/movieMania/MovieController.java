@@ -24,4 +24,6 @@ public class MovieController {
     public ResponseEntity<Optional<Movie>> getMovieById(@PathVariable String id) { // it lets the framework know that id has value from path itself
         return new ResponseEntity<>(movieService.getMovieById(id),HttpStatus.OK);
     }
+
+
 }
